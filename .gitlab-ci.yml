@@ -1,0 +1,52 @@
+image: maven:3-jdk-8
+
+variables:
+  PROJECT_TO_DEPLOY: swiftqueue
+
+stages:
+  - build
+  - quality
+  - docker
+  - deploy
+
+build:
+  artifacts:
+    paths:
+      - swiftqueue/target
+    expire_in: 30 minutes
+  stage: build
+  script:
+    - mvn package
+  only:
+    - master
+    - merge_request
+
+test:
+  stage: quality
+  script:
+    - mvn test
+  only:
+    - master
+    - merge_request
+
+docker:
+  stage: docker
+  image: gcr.io/kaniko-project/executor:debug
+  before_script:
+    - echo $PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
+    - cp $KANIKO_CONFIG_JSON /kaniko/.docker/config.json
+    - DIRECTORY=dir:///builds/swift-queue/$CI_PROJECT_NAME
+  script:
+    - /kaniko/executor --context $DIRECTORY --dockerfile Dockerfile --destination swiftqueuetest/$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  image: google/cloud-sdk:latest
+  script:
+    - gcloud auth activate-service-account --key-file $GOOGLE_SERVICE_ACCOUNT_FILE
+    - gcloud container clusters get-credentials gcloud-cluster --zone=europe-west1-b
+    - kubectl set image deployment/swiftqueue swiftqueue=$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
+  only:
+    - master
