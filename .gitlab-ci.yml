@@ -49,6 +49,6 @@ deploy:
   script:
     - gcloud auth activate-service-account --key-file $GOOGLE_SERVICE_ACCOUNT_FILE
     - gcloud container clusters get-credentials gcloud-cluster --project=swiftqueue-305414 --zone=europe-west1-b
-    - kubectl -n swiftqueue set image deployment/swiftqueue swiftqueue=$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
+    - kubectl -n swiftqueue set image deployment/swiftqueue swiftqueue=swiftqueuetest/$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
   only:
     - master
