@@ -12,7 +12,7 @@ stages:
 build:
   artifacts:
     paths:
-      - /builds/$PROJECT_TO_DEPLOY/target
+      - /builds/swift-queue/$PROJECT_TO_DEPLOY/target
     expire_in: 30 minutes
   stage: build
   script:
