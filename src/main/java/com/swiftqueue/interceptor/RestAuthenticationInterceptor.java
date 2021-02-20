@@ -29,7 +29,7 @@ public class RestAuthenticationInterceptor extends HandlerInterceptorAdapter {
             String decryptedValue = aesDecrypter.decrypt(securityProperties.getSecuredSharedKey(), encryptedValue);
             return decryptedValue.equals(securityProperties.getUserSignupToken());
         } catch (Exception ex) {
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "SWIFT_QUEUE_AUTH_MISSING");
             return false;
         }
     }
