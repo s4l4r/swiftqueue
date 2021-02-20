@@ -39,7 +39,7 @@ docker:
     - cp $KANIKO_CONFIG_JSON /kaniko/.docker/config.json
     - DIRECTORY=dir:///builds/swift-queue/$CI_PROJECT_NAME
   script:
-    - /kaniko/executor --context $DIRECTORY --dockerfile Dockerfile --destination swiftqueuetest/$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile target/Dockerfile --destination swiftqueuetest/$PROJECT_TO_DEPLOY:$CI_COMMIT_SHA
   only:
     - master
 
