@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/city")
+@RequestMapping("/api/v1/cities")
 public class CityController {
 
     private final CityService cityService;
@@ -32,7 +32,6 @@ public class CityController {
     }
 
     @GetMapping("/all/{provinceId}")
-    @PreAuthorize("#oauth2.hasScope('read')")
     public ResponseEntity<List<CityDTO>> getCitiesByProvinceId(@PathVariable Long provinceId) {
         return ResponseEntity.ok(cityService.getAllByProvinceId(provinceId));
     }

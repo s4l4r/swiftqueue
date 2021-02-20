@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -51,10 +50,5 @@ public class UserController {
     public ResponseEntity<Void> updateUserInfo(@RequestBody UserInfoDTO userInfoDTO) throws BusinessException {
         userInfoService.updateUserInfo(userInfoDTO);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/services")
-    public ResponseEntity<List<UserInfoDTO>> getAllServiceUsers() {
-        return ResponseEntity.ok(userInfoService.getAllServiceUsers());
     }
 }

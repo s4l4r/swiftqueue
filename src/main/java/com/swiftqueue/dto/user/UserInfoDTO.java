@@ -11,7 +11,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,8 +30,6 @@ public class UserInfoDTO extends BaseDTO {
     private String password;
     @NotBlank(message = "Username must be provided")
     private String username;
-    @NotNull(message = "User type must be specified")
-    private UserType userType;
     private AddressDTO address;
     private Set<TimeSlotDTO> timeslots;
 
@@ -42,11 +39,11 @@ public class UserInfoDTO extends BaseDTO {
         if (!(o instanceof UserInfoDTO)) return false;
         if (!super.equals(o)) return false;
         UserInfoDTO that = (UserInfoDTO) o;
-        return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getTimeslots(), that.getTimeslots()) && Objects.equals(getUserType(), that.getUserType());
+        return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getTimeslots(), that.getTimeslots());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getPassword(), getUsername(), getAddress(), getTimeslots(), getUserType());
+        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getPassword(), getUsername(), getAddress(), getTimeslots());
     }
 }

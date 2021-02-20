@@ -52,6 +52,11 @@ public class ProvinceController {
                         .build().toUri()).build();
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<ProvinceDTO>> getAllProvinces() {
+        return ResponseEntity.ok(provinceService.getAll());
+    }
+
     @PostMapping("/re-import-locations")
     @PreAuthorize("#oauth2.hasScope('trust')")
     public ResponseEntity<List<ProvinceDTO>> reImportLocations() throws IOException {

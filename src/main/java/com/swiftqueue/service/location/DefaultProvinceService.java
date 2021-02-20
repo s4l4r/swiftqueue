@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class DefaultProvinceService implements ProvinceService {
 
@@ -35,5 +38,13 @@ public class DefaultProvinceService implements ProvinceService {
         Province province = modelMapper.map(dto, Province.class);
         province.getCities().forEach(city -> city.setProvince(province));
         return modelMapper.map(provinceRepository.save(province), ProvinceDTO.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProvinceDTO> getAll() {
+        return provinceRepository.findAll()
+                .stream().map(result -> modelMapper.map(result, ProvinceDTO.class))
+                .collect(Collectors.toList());
     }
 }

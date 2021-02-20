@@ -1,6 +1,5 @@
 package com.swiftqueue.model.user;
 
-import com.swiftqueue.dto.user.UserType;
 import com.swiftqueue.model.AbstractEntity;
 import com.swiftqueue.model.location.Address;
 import com.swiftqueue.model.schedule.TimeSlot;
@@ -41,10 +40,6 @@ public class UserInfo extends AbstractEntity {
     @Column(name = "ENABLED")
     private boolean enabled;
 
-    @Column(name = "USER_TYPE")
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
     @OneToOne(orphanRemoval = true, cascade = CascadeType.MERGE)
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ID")
     private Address address;
@@ -63,6 +58,6 @@ public class UserInfo extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getUsername(), getPassword(), getRole(), isEnabled(), getAddress(), getUserType());
+        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getUsername(), getPassword(), getRole(), isEnabled(), getAddress());
     }
 }

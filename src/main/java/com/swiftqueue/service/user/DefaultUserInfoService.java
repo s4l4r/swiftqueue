@@ -2,7 +2,6 @@ package com.swiftqueue.service.user;
 
 import com.swiftqueue.dto.location.AddressDTO;
 import com.swiftqueue.dto.user.UserInfoDTO;
-import com.swiftqueue.dto.user.UserType;
 import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
 import com.swiftqueue.model.user.UserInfo;
@@ -14,9 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,14 +77,6 @@ public class DefaultUserInfoService implements UserInfoService {
         userInfo.setFirstName(userInfoDTO.getFirstName());
         userInfo.setLastName(userInfoDTO.getLastName());
         userDetailsRepository.save(userInfo);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserInfoDTO> getAllServiceUsers() {
-        return userDetailsRepository.findAllByUserType(UserType.SERVICE)
-                .stream().map(result -> modelMapper.map(result, UserInfoDTO.class))
-                .collect(Collectors.toList());
     }
 
     @Override
