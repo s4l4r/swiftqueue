@@ -20,6 +20,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/health/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/provinces/all").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/cities/all/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/users/test/**").permitAll()

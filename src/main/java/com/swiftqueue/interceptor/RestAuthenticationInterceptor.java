@@ -24,14 +24,17 @@ public class RestAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws IOException {
-        String encryptedValue = httpServletRequest.getHeader(USER_SIGN_UP_AUTH_HEADER);
-        try {
-            String decryptedValue = aesDecrypter.decrypt(securityProperties.getSecuredSharedKey(), encryptedValue);
-            return decryptedValue.equals(securityProperties.getUserSignupToken());
-        } catch (Exception ex) {
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "SWIFT_QUEUE_AUTH_MISSING");
-            return false;
+        if (httpServletRequest.getRequestURI().contains("api")) {
+            String encryptedValue = httpServletRequest.getHeader(USER_SIGN_UP_AUTH_HEADER);
+            try {
+                String decryptedValue = aesDecrypter.decrypt(securityProperties.getSecuredSharedKey(), encryptedValue);
+                return decryptedValue.equals(securityProperties.getUserSignupToken());
+            } catch (Exception ex) {
+                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "SWIFT_QUEUE_AUTH_MISSING");
+                return false;
+            }
         }
+        return true;
     }
 
     @Override
