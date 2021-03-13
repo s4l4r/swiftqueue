@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swiftqueue.dto.location.CityDTO;
 import com.swiftqueue.dto.location.JsonFileCityDTO;
 import com.swiftqueue.dto.location.ProvinceDTO;
+import com.swiftqueue.dto.location.JsonFileProvinceDTO;
 import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
 import com.swiftqueue.service.location.ProvinceService;
@@ -44,8 +45,8 @@ public class ProvinceController {
 
     @PostMapping
     @PreAuthorize("#oauth2.hasScope('write')")
-    public ResponseEntity<ProvinceDTO> saveProvince(@RequestBody  @Valid ProvinceDTO provinceDTO) throws BusinessException {
-        ProvinceDTO savedProvinceDTO = provinceService.save(provinceDTO);
+    public ResponseEntity<JsonFileProvinceDTO> saveProvince(@RequestBody  @Valid JsonFileProvinceDTO provinceDTO) throws BusinessException {
+        JsonFileProvinceDTO savedProvinceDTO = provinceService.save(provinceDTO);
         return ResponseEntity.created(UriComponentsBuilder
                         .fromPath("/api/v1/provinces/")
                         .pathSegment(String.valueOf(savedProvinceDTO.getId()))
@@ -59,9 +60,9 @@ public class ProvinceController {
 
     @PostMapping("/re-import-locations")
     @PreAuthorize("#oauth2.hasScope('trust')")
-    public ResponseEntity<List<ProvinceDTO>> reImportLocations() throws IOException {
+    public ResponseEntity<List<JsonFileProvinceDTO>> reImportLocations() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<ProvinceDTO> provinceDTOS = mapper.readValue(new ClassPathResource("/location/provinces.json").getFile(), new TypeReference<List<ProvinceDTO>>() {});
+        List<JsonFileProvinceDTO> provinceDTOS = mapper.readValue(new ClassPathResource("/location/provinces.json").getFile(), new TypeReference<List<JsonFileProvinceDTO>>() {});
         List<JsonFileCityDTO> jsonFileCityDTOS = mapper.readValue(new ClassPathResource("/location/cities.json").getFile(), new TypeReference<List<JsonFileCityDTO>>(){});
         provinceDTOS.forEach(provinceDTO -> provinceDTO.setCities(jsonFileCityDTOS.stream()
                 .filter(city -> city.getProvince() == provinceDTO.getId())
