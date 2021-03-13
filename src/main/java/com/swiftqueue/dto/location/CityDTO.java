@@ -21,7 +21,6 @@ public class CityDTO extends BaseDTO {
 
     @NotBlank(message = "City name must be provided")
     private String name;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "Province of the city must be provided")
     private ProvinceDTO province;
 

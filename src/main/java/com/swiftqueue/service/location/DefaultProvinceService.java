@@ -1,5 +1,6 @@
 package com.swiftqueue.service.location;
 
+import com.swiftqueue.dto.location.JsonFileProvinceDTO;
 import com.swiftqueue.dto.location.ProvinceDTO;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
 import com.swiftqueue.model.location.Province;
@@ -34,10 +35,10 @@ public class DefaultProvinceService implements ProvinceService {
     }
 
     @Transactional
-    public ProvinceDTO save(ProvinceDTO dto) {
+    public JsonFileProvinceDTO save(JsonFileProvinceDTO dto) {
         Province province = modelMapper.map(dto, Province.class);
         province.getCities().forEach(city -> city.setProvince(province));
-        return modelMapper.map(provinceRepository.save(province), ProvinceDTO.class);
+        return modelMapper.map(provinceRepository.save(province), JsonFileProvinceDTO.class);
     }
 
     @Override

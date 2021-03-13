@@ -21,8 +21,6 @@ public class ProvinceDTO extends BaseDTO {
 
     @NotBlank(message = "Province name must be provided")
     private String name;
-    @NotEmpty(message = "Province must contain at least 1 city")
-    private Set<CityDTO> cities;
 
     @Override
     public boolean equals(Object o) {
@@ -30,8 +28,7 @@ public class ProvinceDTO extends BaseDTO {
         if (!(o instanceof ProvinceDTO)) return false;
         if (!super.equals(o)) return false;
         ProvinceDTO that = (ProvinceDTO) o;
-        return Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getCities(), that.getCities());
+        return Objects.equals(getName(), that.getName());
     }
 
     @Override
