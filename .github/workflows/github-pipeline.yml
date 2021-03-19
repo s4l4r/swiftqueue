@@ -38,6 +38,8 @@ jobs:
           path: target/*.jar
   Docker:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_SHA: ${GITHUB_SHA}
     needs: build
     if: github.ref == 'refs/heads/master'
     steps:
@@ -63,6 +65,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: "${{ secrets.DOCKER_REPO }}/${{ secrets.DOCKER_IMAGE_NAME}}:$GITHUB_SHA,${{ secrets.DOCKER_REPO }}/${{ secrets.DOCKER_IMAGE_NAME}}:latest"
+          tags: swiftqueuetest/swiftqueue:${{ github.sha }},swiftqueuetest/swiftqueue:latest"
           context: .
           file: src/main/docker/Dockerfile
