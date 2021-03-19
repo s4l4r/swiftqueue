@@ -31,7 +31,7 @@ jobs:
       - name: Package
         run: mvn install
       - name: stage
-        run: mkdir staging && cp target/* staging
+        run: mkdir staging && cp -r target/* staging
       - name: upload-artifact
         uses: actions/upload-artifact@v2
         with:
