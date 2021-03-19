@@ -1,4 +1,4 @@
-name: Master branch Build & Deploy
+name: Build & Deploy Master Branch
 
 # Run this workflow every time a new commit pushed to the repository
 on:
@@ -9,7 +9,7 @@ on:
     types:
       - synchronize
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
         with:
           name: app-artifact
           path: staging
-  docker:
+  Docker:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/master'
