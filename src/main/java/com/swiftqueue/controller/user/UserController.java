@@ -1,5 +1,6 @@
 package com.swiftqueue.controller.user;
 
+import com.swiftqueue.dto.auth.VerificationCodeDTO;
 import com.swiftqueue.dto.user.UserInfoDTO;
 import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
@@ -39,6 +40,18 @@ public class UserController {
                         .fromPath("/api/v1/users/")
                         .pathSegment(String.valueOf(savedUserInfoDTO.getId()))
                         .build().toUri()).build();
+    }
+
+    @PostMapping("/start-verify")
+    public ResponseEntity<VerificationCodeDTO> sendVerificationCodeAsSMS(@RequestParam("userId") Long userId) throws ResourceNotFoundException {
+        UserInfoDTO userInfoDTO = userInfoService.getById(userId);
+        return ResponseEntity.ok(userInfoService.sendVerificationCodeAsSMS(userInfoDTO.getUsername()));
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<Boolean> verifyUserVerificationCode(@RequestParam("code") String code, @RequestParam("userId") Long userId) throws ResourceNotFoundException {
+        UserInfoDTO userInfoDTO = userInfoService.getById(userId);
+        return ResponseEntity.ok(userInfoService.verifyRegisteredUser(code, userInfoDTO));
     }
 
     @GetMapping("/test/{username}")
