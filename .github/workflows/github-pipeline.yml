@@ -70,6 +70,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Deploy to Production
+        uses: steebchen/kubectl@master
         env:
           # A base-64 representation of ~/.kube/config file
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
