@@ -19,7 +19,7 @@ jobs:
           java-version: 1.8
       - name: Compile
         run: mvn compile
-      - name: Cache Maven packages
+      - name: Cache Maven Packages
         uses: actions/cache@v2
         with:
           path: ~/.m2
@@ -32,7 +32,7 @@ jobs:
         run: mvn package
       - name: Prepare Artifact
 #        if: github.ref == 'refs/heads/master'
-        run: mkdir staging/target && cp -r target/* staging
+        run: mkdir -p staging/target && cp -r target/* staging
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
 #        if: github.ref == 'refs/heads/master'
