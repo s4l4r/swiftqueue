@@ -62,5 +62,5 @@ jobs:
         with:
           push: true
           tags: swiftqueuetest/swiftqueue:${{ github.sha }},swiftqueuetest/swiftqueue:latest
-          context: ./
-          file: ./Dockerfile
+          context: target/
+          file: target/Dockerfile
