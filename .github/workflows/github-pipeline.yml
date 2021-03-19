@@ -1,8 +1,13 @@
 name: Super-Linter
 
 # Run this workflow every time a new commit pushed to the repository
-on: push
-
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - synchronize
 jobs:
   build:
     runs-on: ubuntu-latest
