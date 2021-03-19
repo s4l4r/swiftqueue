@@ -12,7 +12,8 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -31,8 +32,10 @@ jobs:
       - name: Package
         run: mvn package
       - name: Prepare Artifact
+        if: github.ref == 'refs/heads/master'
         run: mkdir -p staging/target && cp -r target/* staging/target
       - name: Upload Artifact
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v2
 #        if: github.ref == 'refs/heads/master'
         with:
