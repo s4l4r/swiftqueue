@@ -54,6 +54,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Debug
+        run: echo $GITHUB_SHA
+      - name: Debug
+        run: echo ${{ secrets.DOCKER_REPO }}
       - name: Build and Push with RevisionId tag
         id: docker_build
         uses: docker/build-push-action@v2
