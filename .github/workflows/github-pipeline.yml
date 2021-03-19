@@ -1,4 +1,4 @@
-name: Super-Linter
+name: Master branch Build & Deploy
 
 # Run this workflow every time a new commit pushed to the repository
 on:
