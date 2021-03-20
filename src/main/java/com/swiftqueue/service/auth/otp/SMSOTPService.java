@@ -6,8 +6,10 @@ import com.swiftqueue.repository.auth.VerificationCodeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class SMSOTPService {
@@ -21,12 +23,19 @@ public class SMSOTPService {
         this.verificationCodeRepository = verificationCodeRepository;
     }
 
-    public VerificationCodeDTO sendVerificationMessage(String number) {
+    @Transactional
+    public VerificationCodeDTO sendOTP(String number) {
+        verificationCodeRepository.findByPhoneNumber(number).ifPresent(verificationCodeRepository::delete);
         VerificationCode verificationCode = verificationCodeRepository.save(new VerificationCode("c0de", number, LocalDateTime.now()));
         return modelMapper.map(verificationCode, VerificationCodeDTO.class);
     }
 
-    public boolean verifyMessage(String code, String number) {
-        return verificationCodeRepository.findByCodeAndPhoneNumber(code, number).isPresent();
+    @Transactional
+    public boolean verifyOTP(String code, String number) {
+        Optional<VerificationCode> sentVerificationCode = verificationCodeRepository.findByCodeAndPhoneNumber(code, number);
+        if (!sentVerificationCode.isPresent())
+            return false;
+        verificationCodeRepository.delete(sentVerificationCode.get().getId());
+        return true;
     }
 }

@@ -1,13 +1,11 @@
 package com.swiftqueue.service.user;
 
-import com.swiftqueue.dto.auth.VerificationCodeDTO;
 import com.swiftqueue.dto.location.AddressDTO;
 import com.swiftqueue.dto.user.UserInfoDTO;
 import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
 import com.swiftqueue.model.user.UserInfo;
 import com.swiftqueue.repository.user.UserDetailsRepository;
-import com.swiftqueue.service.auth.otp.OTPProvider;
 import com.swiftqueue.service.location.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +20,13 @@ import java.util.Optional;
 @Transactional
 public class DefaultUserInfoService implements UserInfoService {
 
-    private final OTPProvider otpProvider;
     private final ModelMapper modelMapper;
     private final AddressService addressService;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    public DefaultUserInfoService(OTPProvider otpProvider, ModelMapper modelMapper, AddressService addressService, UserDetailsRepository userDetailsRepository) {
-        this.otpProvider = otpProvider;
+    public DefaultUserInfoService(ModelMapper modelMapper, AddressService addressService, UserDetailsRepository userDetailsRepository) {
         this.modelMapper = modelMapper;
         this.addressService = addressService;
         this.userDetailsRepository = userDetailsRepository;
@@ -40,13 +36,13 @@ public class DefaultUserInfoService implements UserInfoService {
     @Override
     @Transactional(readOnly = true)
     public Optional<UserInfo> getUserInfoByUserName(String userName) {
-        return userDetailsRepository.findByUsernameAndEnabled(userName, true);
+        return userDetailsRepository.findByUsername(userName);
     }
 
     @Override
-    //Uses the above method for transaction management
+    @Transactional(readOnly = true)
     public UserInfoDTO getByUsername(String username) {
-        return getUserInfoByUserName(username)
+        return userDetailsRepository.findByUsername(username)
                 .map(result -> modelMapper.map(result, UserInfoDTO.class))
                 .orElse(null);
     }
@@ -70,7 +66,7 @@ public class DefaultUserInfoService implements UserInfoService {
         }
         UserInfo userInfo = modelMapper.map(dto, UserInfo.class);
         userInfo.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userInfo.setRole(TYPE);
+        userInfo.setRole("ROLE_USER");
         userInfo.setEnabled(false);
         return modelMapper.map(userDetailsRepository.save(userInfo), UserInfoDTO.class);
     }
@@ -87,18 +83,20 @@ public class DefaultUserInfoService implements UserInfoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public boolean exists(long id) {
-        return userDetailsRepository.exists(id);
+    @Transactional
+    public void enableUser(UserInfoDTO userInfoDTO) throws BusinessException {
+        UserInfo userInfo = userDetailsRepository.findOne(userInfoDTO.getId());
+        if (userInfo == null)
+            throw new BusinessException("User", "enable", "No user found with ID: " + userInfoDTO.getId());
+        userInfo.setEnabled(true);
+        userDetailsRepository.save(userInfo);
     }
 
     @Override
-    public VerificationCodeDTO sendVerificationCodeAsSMS(String number) {
-        return this.otpProvider.sendVerificationMessageUsingSMS(number);
-    }
-
     @Transactional(readOnly = true)
-    public boolean verifyRegisteredUser(String verificationCode, UserInfoDTO userInfoDTO) {
-        return otpProvider.verifySMSVerificationMessage(verificationCode, userInfoDTO.getUsername());
+    public boolean enabledByUsername(String username) throws ResourceNotFoundException {
+        return userDetailsRepository.findByUsername(username)
+                .map(UserInfo::isEnabled)
+                .orElseThrow(() -> new ResourceNotFoundException("User", username));
     }
 }

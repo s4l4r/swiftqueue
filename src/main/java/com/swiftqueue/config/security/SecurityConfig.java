@@ -43,14 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/health/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/provinces/all").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/cities/all/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/users/test/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/**/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/**/clients/search/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/clients/{clientId:\\d+}").permitAll()
+                .antMatchers(HttpMethod.GET,
+                        "/", "/**/health/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
+                        "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
+                .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
+                        "/**/clients/search/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors();

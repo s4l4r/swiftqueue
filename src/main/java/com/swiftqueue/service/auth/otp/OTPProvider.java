@@ -11,7 +11,7 @@ public interface OTPProvider {
      * @param number The number to send the message to
      * @return The random generated verificsation code that has been sent
      */
-    VerificationCodeDTO sendVerificationMessageUsingSMS(String number);
+    VerificationCodeDTO sendSMSOTP(String number);
 
     /**
      * Verifies an input verification code from user
@@ -19,5 +19,5 @@ public interface OTPProvider {
      * @param number The number for which the code had been sent
      * @return True if verified false otherwise
      */
-    boolean verifySMSVerificationMessage(String code, String number);
+    boolean verifyOTP(String code, String number);
 }

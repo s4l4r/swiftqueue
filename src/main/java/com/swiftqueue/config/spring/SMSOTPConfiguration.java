@@ -1,7 +1,6 @@
-package com.swiftqueue.service.auth.otp.config;
+package com.swiftqueue.config.spring;
 
 import lombok.Getter;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "swiftqueue.otp.sms")
 public class SMSOTPConfiguration {
 
-    @NotBlank
+    //TODO Spring is not picking up the value and complains about it being null
+//    @NotBlank
     private String host;
+//    @NotBlank
+    private String username;
+//    @NotBlank
+    private String token;
 }

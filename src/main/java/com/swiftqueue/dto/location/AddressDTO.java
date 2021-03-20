@@ -18,13 +18,13 @@ import java.util.Objects;
 @AllArgsConstructor
 public class AddressDTO extends BaseDTO {
 
-    @NotNull(message = "City must be provided for address")
+    @NotNull(message = "{validation.address.city.notEmpty}")
     private CityDTO city;
-    @NotBlank(message = "Street must be provided for address")
+    @NotBlank(message = "{validation.address.street.notEmpty}")
     private String street;
-    @NotBlank(message = "Phone Number must be provided for address")
+    @NotBlank(message = "{validation.address.phoneNumber.notEmpty}")
     private String phoneNumber;
-    @NotBlank(message = "House Number must be provided for address")
+    @NotBlank(message = "{validation.address.houseNumber.notEmpty}")
     private String houseNumber;
 
     @Override

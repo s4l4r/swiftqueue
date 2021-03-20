@@ -19,9 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProvinceDTO extends BaseDTO {
 
-    @NotBlank(message = "Province name must be provided")
+    @NotBlank(message = "{validation.province.name.notEmpty}")
     private String name;
-    @NotEmpty(message = "Province must contain at least 1 city")
+    @NotEmpty(message = "{validation.province.cities.notEmpty}")
     private Set<CityDTO> cities;
 
     @Override

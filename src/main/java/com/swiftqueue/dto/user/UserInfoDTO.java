@@ -21,17 +21,18 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserInfoDTO extends BaseDTO {
 
-    @NotBlank(message = "User first name must be provided")
+    @NotBlank(message = "{validation.userInfo.firstName.notEmpty}")
     private String firstName;
-    @NotBlank(message = "User last name must be provided")
+    @NotBlank(message = "{validation.userInfo.lastName.notEmpty}")
     private String lastName;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank(message = "User password must be provided")
+    @NotBlank(message = "{validation.userInfo.password.notEmpty}")
     private String password;
-    @NotBlank(message = "Username must be provided")
+    @NotBlank(message = "{validation.userInfo.username.notEmpty}")
     private String username;
     private AddressDTO address;
     private Set<TimeSlotDTO> timeslots;
+    private boolean enabled;
 
     @Override
     public boolean equals(Object o) {
@@ -39,11 +40,13 @@ public class UserInfoDTO extends BaseDTO {
         if (!(o instanceof UserInfoDTO)) return false;
         if (!super.equals(o)) return false;
         UserInfoDTO that = (UserInfoDTO) o;
-        return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getTimeslots(), that.getTimeslots());
+        return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getPassword(),
+                that.getPassword()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getAddress(), that.getAddress())
+                && Objects.equals(getTimeslots(), that.getTimeslots()) && Objects.equals(isEnabled(), that.isEnabled());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getPassword(), getUsername(), getAddress(), getTimeslots());
+        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getPassword(), getUsername(), getAddress(), getTimeslots(), isEnabled());
     }
 }

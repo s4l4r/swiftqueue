@@ -1,6 +1,5 @@
 package com.swiftqueue.service.user;
 
-import com.swiftqueue.dto.auth.VerificationCodeDTO;
 import com.swiftqueue.dto.user.UserInfoDTO;
 import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
@@ -22,9 +21,7 @@ public interface UserInfoService {
 
     void updateUserInfo(UserInfoDTO userInfoDTO) throws BusinessException;
 
-    boolean exists(long id);
+    void enableUser(UserInfoDTO userInfoDTO) throws BusinessException;
 
-    VerificationCodeDTO sendVerificationCodeAsSMS(String number);
-
-    boolean verifyRegisteredUser(String verificationCode, UserInfoDTO userInfoDTO);
+    boolean enabledByUsername(String username) throws ResourceNotFoundException;
 }

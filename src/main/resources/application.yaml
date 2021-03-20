@@ -7,9 +7,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+  mvc:
+    locale: en
+    locale-resolver: fixed
 server:
   port: 8080
-  address: 0.0.0.0
 
 swiftqueue:
   security:
