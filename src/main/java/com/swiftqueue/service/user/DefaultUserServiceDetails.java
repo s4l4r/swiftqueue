@@ -27,7 +27,7 @@ public class DefaultUserServiceDetails implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) {
-        UserInfo userInfo = userInfoService.getUserInfoByUserName(s);
+        UserInfo userInfo = userInfoService.getUserInfoByUserName(s).orElse(new UserInfo());
         GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getRole());
         return new User(userInfo.getUsername(), userInfo.getPassword(), Collections.singletonList(authority));
     }

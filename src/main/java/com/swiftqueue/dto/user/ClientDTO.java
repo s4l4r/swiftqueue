@@ -20,10 +20,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class ClientDTO extends BaseDTO {
 
-    @NotNull(message = "Client must have a name")
+    @NotNull(message = "{validation.client.name.notEmpty}")
     private String name;
     private AddressDTO address;
-    @NotNull(message = "Client must have a user")
+    @NotNull(message = "{validation.client.userInfo.notEmpty}")
     private UserInfoDTO userInfo;
     private Set<ScheduleDTO> schedules;
 

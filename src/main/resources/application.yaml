@@ -7,11 +7,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+  mvc:
+    locale: en
+    locale-resolver: fixed
 server:
   port: 8080
-  address: 0.0.0.0
 
 swiftqueue:
   security:
     secured-shared-key: Zr4u7w!z%C*F-JaNdRgUkXp2s5v8y/A?D(G+KbPeShVmYq3t6w9z$C&F)H@McQfT
     user-signup-token: TjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@N
+  otp:
+    sms:
+      host: dummyhost.ir
