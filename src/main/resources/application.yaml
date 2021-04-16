@@ -4,6 +4,13 @@ spring:
     username: root
     password: mysql-root-password
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: swiftqueue
+      password: swiftqueue
+      authentication-database: admin
   jpa:
     hibernate:
       ddl-auto: update
