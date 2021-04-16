@@ -10,6 +10,11 @@ on:
       - opened
       - synchronize
 jobs:
+  Pre-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Artifact
+        uses: GeekyEggo/delete-artifact@v1.0.0
   Build:
     runs-on: ubuntu-latest
     steps:
