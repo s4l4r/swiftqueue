@@ -13,8 +13,10 @@ jobs:
   Pre-clean:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete Artifact
-        uses: GeekyEggo/delete-artifact@v1.0.0
+      - uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          expire-in: 0 # Setting this to 0 will delete all artifacts
   Build:
     runs-on: ubuntu-latest
     steps:
