@@ -49,18 +49,22 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
     }
 
     @Bean
-    public JdbcClientDetailsService jdbcClientDetailsService() {
-        return new JdbcClientDetailsService(dataSource);
+    public JdbcClientDetailsService clientDetailsService() {
+        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
+        jdbcClientDetailsService.setPasswordEncoder(passwordEncoder);
+        return jdbcClientDetailsService;
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        security.passwordEncoder(passwordEncoder)
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()");
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
+        clients.withClientDetails(clientDetailsService());
     }
 
     @Override

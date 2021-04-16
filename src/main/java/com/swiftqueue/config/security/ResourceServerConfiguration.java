@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-    private static final String RESOURCE_ID = "resource-server-rest-api";
+    public static final String RESOURCE_ID = "swiftqueue-rest-api";
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
