@@ -80,3 +80,8 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: set image deployment/swiftqueue swiftqueue=swiftqueuetest/swiftqueue:${{ github.sha }} -n swiftqueue
+  Cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Artifact
+        uses: GeekyEggo/delete-artifact@v1.0.0
