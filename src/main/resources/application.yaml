@@ -1,6 +1,7 @@
 spring:
+  profiles: development
   datasource:
-    url: jdbc:mysql://localhost:3306/swiftqueue?useSSL=false
+    url: jdbc:mysql://localhost:3306/swiftqueue?useSSL=false&serverTimezone=Europe/Amsterdam
     username: root
     password: mysql-root-password
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,6 +12,37 @@ spring:
       username: swiftqueue
       password: swiftqueue
       authentication-database: admin
+swiftqueue:
+  security:
+    secured-shared-key: Zr4u7w!z%C*F-JaNdRgUkXp2s5v8y/A?D(G+KbPeShVmYq3t6w9z$C&F)H@McQfT
+    user-signup-token: TjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@N
+  otp:
+    sms:
+      host: dummyhost.ir
+---
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:mysql://${SWIFT_QUEUE_DB_HOST}/swiftqueue?useSSL=false
+    username: ${SWIFT_QUEUE_DB_USERNAME}
+    password: ${SWIFT_QUEUE_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
+      authentication-database: admin
+swiftqueue:
+  security:
+    secured-shared-key: ${SWIFT_QUEUE_SHARED-SECURED-KEY}
+    user-signup-token: ${SWIFT_QUEUE_USER_SIGNUP_TOKEN}
+  otp:
+    sms:
+      host: dummyhost.ir
+---
+spring:
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,11 +54,3 @@ spring:
     locale-resolver: fixed
 server:
   port: 8080
-
-swiftqueue:
-  security:
-    secured-shared-key: Zr4u7w!z%C*F-JaNdRgUkXp2s5v8y/A?D(G+KbPeShVmYq3t6w9z$C&F)H@McQfT
-    user-signup-token: TjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@N
-  otp:
-    sms:
-      host: dummyhost.ir
