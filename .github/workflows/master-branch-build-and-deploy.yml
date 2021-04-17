@@ -78,6 +78,6 @@ jobs:
       - name: Deploy to Production
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade swiftqueue ./helm/swiftqueue --set-string image.tag=${{ github.sha }}
+          exec: helm upgrade swiftqueue /helm/swiftqueue --set-string image.tag=${{ github.sha }}
           # A base-64 representation of ~/.kube/config file
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
