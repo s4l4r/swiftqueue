@@ -73,6 +73,8 @@ jobs:
     needs: Docker
     if: github.ref == 'refs/heads/master'
     steps:
+      - name: Echo working directory
+        run: pwd
       - name: Deploy to Production
         uses: WyriHaximus/github-action-helm3@v2
         with:
