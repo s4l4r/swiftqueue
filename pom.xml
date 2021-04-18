@@ -125,6 +125,10 @@
 				<configuration>
 					<failOnNoGitDirectory>false</failOnNoGitDirectory>
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<gitDescribe>
+						<skip>false</skip>
+						<always>true</always>
+					</gitDescribe>
 				</configuration>
 			</plugin>
 		</plugins>
