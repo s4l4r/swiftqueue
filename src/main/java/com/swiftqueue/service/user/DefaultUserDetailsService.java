@@ -15,12 +15,12 @@ import java.util.Collections;
 
 @Service
 @Qualifier("defaultUserDetails")
-public class DefaultUserServiceDetails implements UserDetailsService {
+public class DefaultUserDetailsService implements UserDetailsService {
 
     private final DefaultUserInfoService userInfoService;
 
     @Autowired
-    public DefaultUserServiceDetails(DefaultUserInfoService userInfoService) {
+    public DefaultUserDetailsService(DefaultUserInfoService userInfoService) {
         this.userInfoService = userInfoService;
     }
 

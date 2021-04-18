@@ -21,10 +21,15 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,
-                        "/", "/**/health/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
+                        "/", "/**/actuator/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
                         "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
                 .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
                         "/**/clients/search/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().fullyAuthenticated();
+        http.httpBasic()
+                .and()
+                .authorizeRequests()
+                //TODO Does not check for the Role -- Should be fixed
+                .antMatchers("/**/management/**").hasAuthority("ROLE_ADMIN");
     }
 }

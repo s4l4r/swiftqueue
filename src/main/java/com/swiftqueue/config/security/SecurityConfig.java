@@ -45,13 +45,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,
-                        "/", "/**/health/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
+                        "/", "/**/actuator/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
                         "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
                 .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
                         "/**/clients/search/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().fullyAuthenticated()
                 .and()
                 .cors();
+        http.httpBasic()
+                .and()
+                .authorizeRequests()
+                //TODO Does not check for the ROLE -- Should be fixed
+                .antMatchers("/**/management/**").hasAuthority("ROLE_ADMIN");
     }
 
     @Bean

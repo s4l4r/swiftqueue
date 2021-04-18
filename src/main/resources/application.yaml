@@ -54,3 +54,17 @@ spring:
     locale-resolver: fixed
 server:
   port: 8080
+management:
+  context-path: /management
+  info:
+    git:
+      enabled: true
+      mode: simple
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+    sensitive: true
+  metrics:
+    enabled: true
+    sensitive: true
