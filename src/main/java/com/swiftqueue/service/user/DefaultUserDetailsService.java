@@ -15,19 +15,19 @@ import java.util.Collections;
 
 @Service
 @Qualifier("defaultUserDetails")
-public class DefaultUserServiceDetails implements UserDetailsService {
+public class DefaultUserDetailsService implements UserDetailsService {
 
     private final DefaultUserInfoService userInfoService;
 
     @Autowired
-    public DefaultUserServiceDetails(DefaultUserInfoService userInfoService) {
+    public DefaultUserDetailsService(DefaultUserInfoService userInfoService) {
         this.userInfoService = userInfoService;
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) {
-        UserInfo userInfo = userInfoService.getUserInfoByUserName(s);
+        UserInfo userInfo = userInfoService.getUserInfoByUserName(s).orElse(new UserInfo());
         GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getRole());
         return new User(userInfo.getUsername(), userInfo.getPassword(), Collections.singletonList(authority));
     }

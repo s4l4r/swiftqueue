@@ -22,11 +22,11 @@ import java.util.Objects;
 public class TimeSlotDTO extends BaseDTO implements Comparable<TimeSlotDTO> {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "TimeSlot schedule must be provided")
+    @NotNull(message = "{validation.timeSlot.schedule.notEmpty}")
     private ScheduleDTO schedule;
-    @NotBlank(message = "TimeSlot time must be provided")
+    @NotBlank(message = "{validation.timeSlot.time.notEmpty}")
     private String time;
-    @NotBlank(message = "TimeSlot date must be provided")
+    @NotBlank(message = "{validation.timeSlot.date.notEmpty}")
     private String date;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserInfoDTO userInfo;

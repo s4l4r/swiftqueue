@@ -6,10 +6,13 @@ import com.swiftqueue.config.security.SecurityProperties;
 import com.swiftqueue.interceptor.RestAuthenticationInterceptor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.DataSourceHealthIndicator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class SpringContextConfig extends WebMvcConfigurerAdapter {
@@ -39,6 +42,13 @@ public class SpringContextConfig extends WebMvcConfigurerAdapter {
     @Bean
     public DateConverter dateConverter() {
         return new DateConverter();
+    }
+
+    @Bean
+    public DataSourceHealthIndicator dataSourceHealthIndicator(DataSource dataSource) {
+        DataSourceHealthIndicator dataSourceHealthIndicator = new DataSourceHealthIndicator();
+        dataSourceHealthIndicator.setDataSource(dataSource);
+        return dataSourceHealthIndicator;
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.swiftqueue.exception.business.BusinessException;
 import com.swiftqueue.exception.server.ResourceNotFoundException;
 import com.swiftqueue.model.user.UserInfo;
 
+import java.util.Optional;
+
 public interface UserInfoService {
 
     String TYPE = "User";
@@ -15,9 +17,11 @@ public interface UserInfoService {
 
     UserInfoDTO getByUsername(String username);
 
-    UserInfo getUserInfoByUserName(String userName);
+    Optional<UserInfo> getUserInfoByUserName(String userName);
 
     void updateUserInfo(UserInfoDTO userInfoDTO) throws BusinessException;
 
-    boolean exists(long id);
+    void enableUser(UserInfoDTO userInfoDTO) throws BusinessException;
+
+    boolean enabledByUsername(String username) throws ResourceNotFoundException;
 }

@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class DefaultUserInfoService implements UserInfoService {
@@ -33,15 +35,16 @@ public class DefaultUserInfoService implements UserInfoService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserInfo getUserInfoByUserName(String userName) {
-        return userDetailsRepository.findByUsernameAndEnabled(userName, true);
+    public Optional<UserInfo> getUserInfoByUserName(String userName) {
+        return userDetailsRepository.findByUsername(userName);
     }
 
     @Override
-    //Uses the above method for transaction management
+    @Transactional(readOnly = true)
     public UserInfoDTO getByUsername(String username) {
-        UserInfo userInfo = getUserInfoByUserName(username);
-        return userInfo != null ? modelMapper.map(userInfo, UserInfoDTO.class) : null;
+        return userDetailsRepository.findByUsername(username)
+                .map(result -> modelMapper.map(result, UserInfoDTO.class))
+                .orElse(null);
     }
 
     @Override
@@ -63,8 +66,8 @@ public class DefaultUserInfoService implements UserInfoService {
         }
         UserInfo userInfo = modelMapper.map(dto, UserInfo.class);
         userInfo.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userInfo.setRole(TYPE);
-        userInfo.setEnabled(true);
+        userInfo.setRole("ROLE_USER");
+        userInfo.setEnabled(false);
         return modelMapper.map(userDetailsRepository.save(userInfo), UserInfoDTO.class);
     }
 
@@ -80,8 +83,20 @@ public class DefaultUserInfoService implements UserInfoService {
     }
 
     @Override
+    @Transactional
+    public void enableUser(UserInfoDTO userInfoDTO) throws BusinessException {
+        UserInfo userInfo = userDetailsRepository.findOne(userInfoDTO.getId());
+        if (userInfo == null)
+            throw new BusinessException("User", "enable", "No user found with ID: " + userInfoDTO.getId());
+        userInfo.setEnabled(true);
+        userDetailsRepository.save(userInfo);
+    }
+
+    @Override
     @Transactional(readOnly = true)
-    public boolean exists(long id) {
-        return userDetailsRepository.exists(id);
+    public boolean enabledByUsername(String username) throws ResourceNotFoundException {
+        return userDetailsRepository.findByUsername(username)
+                .map(UserInfo::isEnabled)
+                .orElseThrow(() -> new ResourceNotFoundException("User", username));
     }
 }

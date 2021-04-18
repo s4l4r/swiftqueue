@@ -22,20 +22,20 @@ import java.util.Set;
 @AllArgsConstructor
 public class ScheduleDTO extends BaseDTO {
 
-    @NotBlank(message = "Schedule must have a name")
+    @NotBlank(message = "{validation.schedule.name.notEmpty}")
     private String name;
-    @NotBlank(message = "Schedule from date must be provided")
+    @NotBlank(message = "{validation.schedule.fromDate.notEmpty}")
     private String fromDate;
-    @NotBlank(message = "Schedule to date must be provided")
+    @NotBlank(message = "{validation.schedule.toDate.notEmpty}")
     private String toDate;
-    @NotBlank(message = "Schedule from time must be provided")
+    @NotBlank(message = "{validation.schedule.fromTime.notEmpty}")
     private String fromTime;
-    @NotBlank(message = "Schedule to time must be provided")
+    @NotBlank(message = "{validation.schedule.toTime.notEmpty}")
     private String toTime;
-    @Digits(fraction = 0, integer = Integer.MAX_VALUE, message = "Interval must be an integer number")
+    @Digits(fraction = 0, integer = Integer.MAX_VALUE, message = "{validation.schedule.interval.digits}")
     private int intervalTime;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "Client must be provided for the schedule")
+    @NotNull(message = "{validation.schedule.client.notEmpty}")
     private ClientDTO client;
     private Set<TimeSlotDTO> timeSlots;
 

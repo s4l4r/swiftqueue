@@ -19,9 +19,10 @@ import java.util.Objects;
 @AllArgsConstructor
 public class CityDTO extends BaseDTO {
 
-    @NotBlank(message = "City name must be provided")
+    @NotBlank(message = "{validation.city.name.notEmpty}")
     private String name;
-    @NotNull(message = "Province of the city must be provided")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull(message = "{validation.city.province.notEmpty}")
     private ProvinceDTO province;
 
     @Override

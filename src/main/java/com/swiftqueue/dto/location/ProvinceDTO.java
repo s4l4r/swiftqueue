@@ -19,8 +19,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProvinceDTO extends BaseDTO {
 
-    @NotBlank(message = "Province name must be provided")
+    @NotBlank(message = "{validation.province.name.notEmpty}")
     private String name;
+    @NotEmpty(message = "{validation.province.cities.notEmpty}")
+    private Set<CityDTO> cities;
 
     @Override
     public boolean equals(Object o) {
@@ -28,7 +30,8 @@ public class ProvinceDTO extends BaseDTO {
         if (!(o instanceof ProvinceDTO)) return false;
         if (!super.equals(o)) return false;
         ProvinceDTO that = (ProvinceDTO) o;
-        return Objects.equals(getName(), that.getName());
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getCities(), that.getCities());
     }
 
     @Override

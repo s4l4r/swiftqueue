@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @EnableWebSecurity
@@ -26,9 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
@@ -43,17 +44,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/health/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/provinces/all").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/cities/all/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/users/test/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/**/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/**/clients/search/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/clients/{clientId:\\d+}").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET,
+                        "/", "/**/actuator/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
+                        "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
+                .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
+                        "/**/clients/search/**").permitAll()
+                .anyRequest().fullyAuthenticated()
                 .and()
                 .cors();
+        http.httpBasic()
+                .and()
+                .authorizeRequests()
+                //TODO Does not check for the ROLE -- Should be fixed
+                .antMatchers("/**/management/**").hasAuthority("ROLE_ADMIN");
     }
 
     @Bean
@@ -64,6 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(authProvider(passwordEncoder()));
     }
 }
