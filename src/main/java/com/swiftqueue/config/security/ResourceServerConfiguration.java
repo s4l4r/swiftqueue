@@ -25,6 +25,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
                 .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
                         "/**/clients/search/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().fullyAuthenticated();
+        http.httpBasic()
+                .and()
+                .authorizeRequests()
+                //TODO Does not check for the Role -- Should be fixed
+                .antMatchers("/**/management/**").hasAuthority("ROLE_ADMIN");
     }
 }

@@ -3,33 +3,34 @@ package com.swiftqueue.util.health;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.DataSourceHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthAggregator;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class ApplicationReadinessIndicator implements HealthIndicator {
 
+    private final HealthAggregator healthAggregator;
     private final DataSourceHealthIndicator dataSourceHealthIndicator;
 
     @Autowired
-    public ApplicationReadinessIndicator(DataSourceHealthIndicator dataSourceHealthIndicator) {
+    public ApplicationReadinessIndicator(HealthAggregator healthAggregator,
+                                         DataSourceHealthIndicator dataSourceHealthIndicator) {
+        this.healthAggregator = healthAggregator;
         this.dataSourceHealthIndicator = dataSourceHealthIndicator;
     }
 
     @Override
     public Health health() {
-        Health.Builder healthBuilder = Health.status(Status.UP);
-        return checkDatasourceHealth(healthBuilder).build();
+        Map<String, Health> healthStats = new HashMap<>();
+        checkDatasourceHealth(healthStats);
+        return healthAggregator.aggregate(healthStats);
     }
 
-    private Health.Builder checkDatasourceHealth(Health.Builder builder) {
-        Health dbHealth = dataSourceHealthIndicator.health();
-        Map<String, Object> dbHealthDetails = dbHealth.getDetails();
-        builder.status(dbHealth.getStatus());
-        builder.withDetail("Datasource", dbHealthDetails);
-        return builder;
+    private void checkDatasourceHealth(Map<String, Health> healthStats) {
+        healthStats.put("Datasource", dataSourceHealthIndicator.health());
     }
 }
