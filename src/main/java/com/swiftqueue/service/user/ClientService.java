@@ -8,10 +8,16 @@ import java.util.List;
 
 public interface ClientService {
     String TYPE = "Client";
+
     String UPDATE_OPERATION = "UPDATE";
+
     ClientDTO getById(Long clientId) throws ResourceNotFoundException;
+
     ClientDTO save(ClientDTO clientDTO) throws BusinessException;
+
     List<ClientDTO> getAll();
+
     List<ClientDTO> findAllBySearchPhrase(String searchPhrase);
+
     void update(ClientDTO clientDTO) throws BusinessException;
 }
