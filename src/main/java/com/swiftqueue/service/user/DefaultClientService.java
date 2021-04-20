@@ -82,10 +82,10 @@ public class DefaultClientService implements ClientService {
             throw new BusinessException(TYPE, UPDATE_OPERATION, "Client's user cannot be changed");
         if (clientDTO.getAddress() != null) {
             AddressDTO addressDTO = addressService.save(clientDTO.getAddress());
-            clientDTO.setAddress(addressDTO);
+            oldClient.setAddress(addressDTO);
         }
-        clientDTO.setSchedules(oldClient.getSchedules());
-        Client client = modelMapper.map(clientDTO, Client.class);
+        oldClient.setName(clientDTO.getName());
+        Client client = modelMapper.map(oldClient, Client.class);
         clientRepository.save(client);
     }
 

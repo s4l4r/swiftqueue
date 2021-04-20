@@ -42,11 +42,7 @@ public class ClientController {
     @GetMapping("/all")
     @PreAuthorize("#oauth2.hasScope('read')")
     public ResponseEntity<List<ClientDTO>> getAllClients() {
-        List<ClientDTO> result = clientService.getAll();
-        result.addAll(clientService.getAll());
-        result.addAll(clientService.getAll());
-        result.addAll(clientService.getAll());
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(clientService.getAll());
     }
 
     @PutMapping
