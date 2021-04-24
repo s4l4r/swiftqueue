@@ -35,7 +35,11 @@ jobs:
       - name: Package
         run: mvn package
       - name: Get Version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        run: |
+          SNAPSHOT_VERSION=echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          VERSION=$(echo "${SNAPSHOT_VERSION/-SNAPSHOT/}")
+          echo "Preparing to release version ${VERSION}"
+          echo ::set-output name=version::${VERSION}
         id: set-version
       - name: Prepare Artifact
         if: github.ref == 'refs/heads/master'
@@ -87,7 +91,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
   UpdateVersion:
     runs-on: ubuntu-latest
-    needs: Deploy
+    needs: [Build, Deploy]
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
@@ -96,7 +100,10 @@ jobs:
       - name: Extract Project Version
         run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
       - name: Update POM Version
-        run: mvn versions:set -DnewVersion=$(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')
+        run: |
+          NEXT_VERSION=$(echo $(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT)
+#          sed -r 's/^<swiftqueue.version>${{needs.Build.outputs.version}}-SNAPSHOT</swiftqueue.version>/<swiftqueue.version>${NEXT_VERSION}</swiftqueue.version>'
+          mvn versions:set -DnewVersion=$NEXT_VERSION
       - name: Commit files
         run: |
           git config --local user.email "github@users.noreply.github.com"
