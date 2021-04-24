@@ -11,7 +11,7 @@
 	<groupId>com.swiftqueue</groupId>
 	<artifactId>swiftqueue</artifactId>
 	<version>0.0.5-SNAPSHOT</version>
-	<name>Swift Queue</name>
+	<name>SwiftQueue</name>
 	<description>Swift Queue Application</description>
 
 	<properties>

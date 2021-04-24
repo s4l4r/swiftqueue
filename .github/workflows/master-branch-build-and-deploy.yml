@@ -34,7 +34,7 @@ jobs:
         run: mvn test
       - name: Package
         run: mvn package
-      - name: Get Version
+      - name: Set Version
         run: |
           SNAPSHOT_VERSION=$(echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec))
           VERSION=$(echo "${SNAPSHOT_VERSION/-SNAPSHOT/}")
