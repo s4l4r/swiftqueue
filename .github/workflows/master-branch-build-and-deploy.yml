@@ -12,9 +12,6 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    outputs:
-      version:
-        value: ${{ steps.set-version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -95,30 +92,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Update POM Version
         run: mvn versions:set -DnewVersion=$(echo ${{ steps.set-version.outputs.version }} | awk -F. -v OFS=. '{$NF++;print}')
-      - name: Commit files
-        run: |
-          git config --local user.email "github@users.noreply.github.com"
-          git config --local user.name "Github CI/CD"
-          git commit -m "Updated POM file for the next version" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
-
-  UpdateVersion:
-    runs-on: ubuntu-latest
-    needs: Deploy
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        # Extracts and stores the project version in steps.project.outputs.version
-      - name: Extract Project Version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-      - name: Update POM Version
-        run: sed -i 's/<version>"${{ steps.project.outputs.version }}"</version>/'
       - name: Commit files
         run: |
           git config --local user.email "github@users.noreply.github.com"
