@@ -38,7 +38,7 @@ jobs:
         run: |
           SNAPSHOT_VERSION=$(echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec))
           VERSION=$(echo "${SNAPSHOT_VERSION/-SNAPSHOT/}")
-          echo "Preparing to release version ${VERSION}"
+          echo "Version ${VERSION} will be released!"
           echo ::set-output name=version::${VERSION}
         id: set-version
       - name: Prepare Artifact
@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Update POM Version
         run: |
-          NEXT_VERSION=$(echo $(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT)
+          NEXT_VERSION=$(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT
           echo "Setting next snapshot version ${NEXT_VERSION}"
           mvn versions:set -DnewVersion=$NEXT_VERSION
       - name: Commit files
