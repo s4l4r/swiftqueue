@@ -36,7 +36,7 @@ jobs:
         run: mvn package
       - name: Get Version
         run: |
-          SNAPSHOT_VERSION=echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          SNAPSHOT_VERSION=$(echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec))
           VERSION=$(echo "${SNAPSHOT_VERSION/-SNAPSHOT/}")
           echo "Preparing to release version ${VERSION}"
           echo ::set-output name=version::${VERSION}
