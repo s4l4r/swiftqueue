@@ -98,6 +98,7 @@ jobs:
       - name: Update POM Version
         run: |
           NEXT_VERSION=$(echo $(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT)
+          echo "Setting next snapshot version ${NEXT_VERSION}"
           mvn versions:set -DnewVersion=$NEXT_VERSION
       - name: Commit files
         run: |

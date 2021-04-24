@@ -19,8 +19,8 @@ swiftqueue:
   otp:
     sms:
       provider-url: https://dummyUrl
-      username:
-      token:
+      username: username
+      token: password
 ---
 spring:
   profiles: production
