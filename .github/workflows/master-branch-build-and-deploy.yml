@@ -13,8 +13,8 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     outputs:
-      version:
-        value: ${{ steps.set-version.outputs.version }}
+      current-version:
+        value: ${{ steps.set-version.outputs.current-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
       - name: Package
         run: mvn package
       - name: Get Version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        run: echo ::set-output name=current-version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
         id: set-version
       - name: Prepare Artifact
         if: github.ref == 'refs/heads/master'
@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: swiftqueuetest/swiftqueue:${{ version }},swiftqueuetest/swiftqueue:latest
+          tags: swiftqueuetest/swiftqueue:${{ current-version }},swiftqueuetest/swiftqueue:latest
           context: target/
           file: target/Dockerfile
   Deploy:
@@ -84,7 +84,7 @@ jobs:
       - name: Deploy to Production
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade swiftqueue ./helm/swiftqueue --set-string image.tag=${{ version }}
+          exec: helm upgrade swiftqueue ./helm/swiftqueue --set-string image.tag=${{ current-version }}
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
   UpdateVersion:
     runs-on: ubuntu-latest
@@ -97,7 +97,7 @@ jobs:
       - name: Extract Project Version
         run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
       - name: Update POM Version
-        run: mvn versions:set -DnewVersion=$(echo ${{ version }} | awk -F. -v OFS=. '{$NF++;print}')
+        run: mvn versions:set -DnewVersion=$(echo ${{ current-version }} | awk -F. -v OFS=. '{$NF++;print}')
       - name: Commit files
         run: |
           git config --local user.email "github@users.noreply.github.com"
