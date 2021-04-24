@@ -102,7 +102,6 @@ jobs:
       - name: Update POM Version
         run: |
           NEXT_VERSION=$(echo $(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT)
-#          sed -r 's/^<swiftqueue.version>${{needs.Build.outputs.version}}-SNAPSHOT</swiftqueue.version>/<swiftqueue.version>${NEXT_VERSION}</swiftqueue.version>'
           mvn versions:set -DnewVersion=$NEXT_VERSION
       - name: Commit files
         run: |
