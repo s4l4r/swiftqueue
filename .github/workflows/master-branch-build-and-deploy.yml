@@ -47,7 +47,6 @@ jobs:
       - name: Upload Artifact
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v2
-#        if: github.ref == 'refs/heads/master'
         with:
           name: app-artifact
           path: staging
@@ -96,9 +95,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        # Extracts and stores the project version in steps.project.outputs.version
-      - name: Extract Project Version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
       - name: Update POM Version
         run: |
           NEXT_VERSION=$(echo $(echo ${{needs.Build.outputs.version}} | awk -F. -v OFS=. '{$NF++;print}')-SNAPSHOT)

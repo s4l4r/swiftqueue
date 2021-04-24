@@ -16,7 +16,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<swiftqueue.version>0.0.1-SNAPSHOT</swiftqueue.version>
 		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
 		<spring.security.oauth2.version>2.3.0.RELEASE</spring.security.oauth2.version>
 		<mysql.version>8.0.18</mysql.version>
