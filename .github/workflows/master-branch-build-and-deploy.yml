@@ -33,7 +33,7 @@ jobs:
       - name: Package
         run: mvn package
       - name: Get Version
-        run: echo '::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)'
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
         id: set-version
       - name: Prepare Artifact
         if: github.ref == 'refs/heads/master'
