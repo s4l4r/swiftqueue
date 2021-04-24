@@ -38,7 +38,7 @@ jobs:
         run: |
           SNAPSHOT_VERSION=$(echo $(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec))
           VERSION=$(echo "${SNAPSHOT_VERSION/-SNAPSHOT/}")
-          echo "Preparing to release version ${VERSION}"
+          echo "Version ${VERSION} will be released!"
           echo ::set-output name=version::${VERSION}
         id: set-version
       - name: Prepare Artifact
