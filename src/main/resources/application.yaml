@@ -18,7 +18,9 @@ swiftqueue:
     user-signup-token: TjWnZr4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@N
   otp:
     sms:
-      host: dummyhost.ir
+      provider-url: https://dummyUrl
+      username:
+      token:
 ---
 spring:
   profiles: production
@@ -40,7 +42,9 @@ swiftqueue:
     user-signup-token: ${SWIFT_QUEUE_USER_SIGNUP_TOKEN}
   otp:
     sms:
-      host: dummyhost.ir
+      provider-url: ${SMS_OTP_PROVIDER_URL}
+      username: ${SMS_OTP_PROVIDER_USER_NAME}
+      token: ${SMS_OTP_PROVIDER_TOKEN}
 ---
 spring:
   jpa:

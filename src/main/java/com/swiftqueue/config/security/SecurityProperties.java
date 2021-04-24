@@ -1,20 +1,18 @@
 package com.swiftqueue.config.security;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
+import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Getter
-@Setter
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "swiftqueue.security")
 public class SecurityProperties {
 
-    @NotBlank
+    @NotEmpty
     private String securedSharedKey;
 
-    @NotBlank
+    @NotEmpty
     private String userSignupToken;
 }
