@@ -32,6 +32,9 @@ jobs:
         run: mvn test
       - name: Package
         run: mvn package
+      - name: Get Version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: set-version
       - name: Prepare Artifact
         if: github.ref == 'refs/heads/master'
         run: mkdir -p staging/target && cp -r target/* staging/target
@@ -65,7 +68,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: swiftqueuetest/swiftqueue:${{ github.sha }},swiftqueuetest/swiftqueue:latest
+          tags: swiftqueuetest/swiftqueue:${{ steps.set-version.outputs.version }},swiftqueuetest/swiftqueue:latest
           context: target/
           file: target/Dockerfile
   Deploy:
@@ -78,7 +81,7 @@ jobs:
       - name: Deploy to Production
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade swiftqueue ./helm/swiftqueue --set-string image.tag=${{ github.sha }}
+          exec: helm upgrade swiftqueue ./helm/swiftqueue --set-string image.tag=${{ steps.set-version.outputs.version }}
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
   UpdateVersion:
     runs-on: ubuntu-latest
@@ -87,11 +90,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        # Extracts and stores the project version in steps.project.outputs.version
-      - name: Extract Project Version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
       - name: Update POM Version
-        run: sed -i 's/<version>"${{ steps.project.outputs.version }}"</version>/'
+        run: mvn versions:set -DnewVersion=$(echo ${{ steps.set-version.outputs.version }} | awk -F. -v OFS=. '{$NF++;print}')
       - name: Commit files
         run: |
           git config --local user.email "github@users.noreply.github.com"
