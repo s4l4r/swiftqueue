@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.swiftqueue</groupId>
 	<artifactId>swiftqueue</artifactId>
-	<version>${swiftqueue.version}</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Swift Queue</name>
 	<description>Swift Queue Application</description>
 
