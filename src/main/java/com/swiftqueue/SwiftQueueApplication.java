@@ -1,7 +1,7 @@
 package com.swiftqueue;
 
-import com.swiftqueue.config.security.SecurityProperties;
-import com.swiftqueue.config.spring.SMSOTPConfiguration;
+import com.swiftqueue.config.properties.SMSOTPConfigurationProperties;
+import com.swiftqueue.config.properties.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties({SecurityProperties.class, SMSOTPConfiguration.class})
+@EnableConfigurationProperties({SecurityProperties.class, SMSOTPConfigurationProperties.class})
 public class SwiftQueueApplication {
 
 	public static void main(String[] args) {

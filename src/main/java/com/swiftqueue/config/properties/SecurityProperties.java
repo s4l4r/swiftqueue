@@ -1,4 +1,4 @@
-package com.swiftqueue.config.security;
+package com.swiftqueue.config.properties;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;

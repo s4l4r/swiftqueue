@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class SMSOTPService {
@@ -32,10 +31,10 @@ public class SMSOTPService {
 
     @Transactional
     public boolean verifyOTP(String code, String number) {
-        Optional<VerificationCode> sentVerificationCode = verificationCodeRepository.findByCodeAndPhoneNumber(code, number);
-        if (!sentVerificationCode.isPresent())
-            return false;
-        verificationCodeRepository.delete(sentVerificationCode.get().getId());
-        return true;
+        return verificationCodeRepository.findByCodeAndPhoneNumber(code, number)
+                .map(value -> {
+                    verificationCodeRepository.delete(value.getId());
+                    return true;
+                }).orElse(false);
     }
 }

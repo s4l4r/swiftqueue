@@ -93,14 +93,14 @@ public class DefaultTimeSlotService implements TimeSlotService {
 
     private Set<TimeSlotDTO> generateTimeSlots(ScheduleDTO schedule) {
         Set<TimeSlotDTO> timeSlots = new HashSet<>();
-        LocalDate startDate = SwiftQueueDateTimeUtils.fromPersianDateAsString(schedule.getFromDate());
-        LocalDate endDate = SwiftQueueDateTimeUtils.fromPersianDateAsString(schedule.getToDate());
+        LocalDate startDate = SwiftQueueDateTimeUtils.persianToGregorian(schedule.getFromDate());
+        LocalDate endDate = SwiftQueueDateTimeUtils.persianToGregorian(schedule.getToDate());
         LocalDate localDate = startDate;
         while (localDate.isBefore(endDate) || localDate.isEqual(endDate)) {
             LocalTime startTime = LocalTime.parse(schedule.getFromTime());
             LocalTime endTime = LocalTime.parse(schedule.getToTime());
             while (startTime.isBefore(endTime)) {
-                String date = SwiftQueueDateTimeUtils.fromGregorianDateAsLocalDateTime(localDate);
+                String date = SwiftQueueDateTimeUtils.gregorianToPersian(localDate);
                 String time = String.format("%02d:%02d", startTime.getHour(), startTime.getMinute());
                 timeSlots.add(TimeSlotDTO.builder().date(date).time(time).build());
                 startTime = startTime.plusMinutes(schedule.getIntervalTime());

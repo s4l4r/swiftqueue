@@ -1,4 +1,4 @@
-package com.swiftqueue.config.spring;
+package com.swiftqueue.config.properties;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "swiftqueue.otp.sms")
-public class SMSOTPConfiguration {
+public class SMSOTPConfigurationProperties {
 
     @NotEmpty
     private String providerUrl;

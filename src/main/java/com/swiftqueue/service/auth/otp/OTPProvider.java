@@ -9,7 +9,7 @@ public interface OTPProvider {
     /**
      * Sends an SMS message containing random a verification code to the number specified.
      * @param number The number to send the message to
-     * @return The random generated verificsation code that has been sent
+     * @return The random generated verification code that has been sent
      */
     VerificationCodeDTO sendSMSOTP(String number);
 
@@ -17,7 +17,7 @@ public interface OTPProvider {
      * Verifies an input verification code from user
      * @param code The verification code to be verified
      * @param number The number for which the code had been sent
-     * @return True if verified false otherwise
+     * @return True if verified otherwise false
      */
     boolean verifyOTP(String code, String number);
 }

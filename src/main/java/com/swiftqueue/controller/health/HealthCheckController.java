@@ -27,8 +27,9 @@ public class HealthCheckController {
 
     @GetMapping(value = {"", "/readiness"})
     public ResponseEntity<Health> getReadiness() {
-        return applicationReadinessIndicator.health().getStatus() == Status.UP
-                ? ResponseEntity.ok(applicationReadinessIndicator.health())
+        Health readiness = applicationReadinessIndicator.health();
+        return readiness.getStatus() == Status.UP
+                ? ResponseEntity.ok(readiness)
                 : ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
     }
 
