@@ -50,6 +50,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  data:
+    mongodb:
+      database: swiftqueue
   messages:
     basename: messages
     fallback-to-system-locale: false
