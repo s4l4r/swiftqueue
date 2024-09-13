@@ -17,56 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final UserDetailsService userDetailsService;
-
-    @Autowired
-    public SecurityConfig(@Qualifier("defaultUserDetails") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+public class SecurityConfig {
 
     @Bean
-    public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(userDetailsService);
-        return provider;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET,
-                        "/", "/**/actuator/**", "/**/provinces/all", "/**/cities/all/**", "/**/users/test/**",
-                        "/**/users/enabled/**", "/**/clients/{clientId:\\d+}").permitAll()
-                .antMatchers(HttpMethod.POST, "/**/otp/send-sms", "/**/otp/verify-sms", "/**/users",
-                        "/**/clients/search/**").permitAll()
-                .anyRequest().fullyAuthenticated()
-                .and()
-                .cors();
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                //TODO Does not check for the ROLE -- Should be fixed
-                .antMatchers("/**/management/**").hasAuthority("ROLE_ADMIN");
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authProvider(passwordEncoder()));
-    }
+    public Sec
 }

@@ -1,7 +1,6 @@
 package com.swiftqueue;
 
 import com.swiftqueue.config.properties.SMSOTPConfigurationProperties;
-import com.swiftqueue.config.properties.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
