@@ -1,8 +1,6 @@
 package com.swiftqueue.config.spring;
 
 import com.github.eloyzone.jalalicalendar.DateConverter;
-import com.swiftqueue.config.properties.SecurityProperties;
-import com.swiftqueue.config.security.AESDecrypter;
 import com.swiftqueue.interceptor.RestAuthenticationInterceptor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

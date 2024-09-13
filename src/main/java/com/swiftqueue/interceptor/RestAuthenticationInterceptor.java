@@ -1,7 +1,5 @@
 package com.swiftqueue.interceptor;
 
-import com.swiftqueue.config.properties.SecurityProperties;
-import com.swiftqueue.config.security.AESDecrypter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
